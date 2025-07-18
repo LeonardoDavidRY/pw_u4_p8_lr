@@ -1,7 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import EstudianteView from '@/views/EstudianteView.vue'
-import LoginView from '@/views/LoginView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import LoginView from '@/views/LoginView.vue';
+import { obtenerPaginasPermitidas } from '@/helpers/Autorizacion';
 
 function estaAutenticado() {
   let result = localStorage.getItem('auth') === 'true';
@@ -18,6 +18,38 @@ const routes = [
     }
   },
   {
+    path: '/about',
+    name: 'about',
+    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
+    meta: {
+      requiresAuth: true, //protegida
+    }
+  },
+  {
+    path: '/estudiante',
+    name: 'estudiante',
+    component: () => import('@/views/EstudianteView.vue'),
+    meta: {
+      requiresAuth: true, //protegida
+    }
+  },
+  {
+    path: '/notas',
+    name: 'notas',
+    component: () => import('@/views/NotasIngresoView.vue'),
+    meta: {
+      requiresAuth: true, //protegida
+    }
+  },
+  {
+    path: '/403',
+    name: '403',
+    component: () => import('@/views/RecursoProhibidoView.vue'),
+    meta: {
+      requiresAuth: true, //protegida
+    }
+  },
+  {
     path: '/login',
     name: 'login',
     component: LoginView
@@ -31,17 +63,24 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   console.log("Antes")
-  if(to.meta.requiresAuth) {
+  if (to.meta.requiresAuth) {
     console.log("Auth")
     // Aquí deberías verificar si el usuario está autenticado
     if (!estaAutenticado()) {
       next({ name: 'login' });
     } else {
-      next();
+      //autenticado, aqui valido si esta autorizado
+      let usuario = localStorage.getItem('usuario');
+      let arreglos = obtenerPaginasPermitidas(usuario);
+      if (arreglos.includes(to.path)) {
+        next();
+      } else {
+        next('/403');
+      }
     }
-  }else {
+  } else {
     next();
   }
-})  
+})
 
 export default router
