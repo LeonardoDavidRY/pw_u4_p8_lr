@@ -2,7 +2,17 @@ export function obtenerPaginasPermitidas(usuario) {
     let arreglo;
     if (usuario === 'admin') {
         //paginas del admin
-        arreglo = ['/home', '/about', '/estudiante', '/notas', '/403']
+        arreglo = [
+            '/home', 
+            '/about', 
+            '/estudiante', 
+            '/estudiante/guardar',
+            '/estudiante/actualizar',
+            '/estudiante/actualizar-parcial',
+            '/estudiante/borrar',
+            '/notas', 
+            '/403'
+        ]
     }
     if (usuario === 'estudiante') {
         //paginas del estudiante

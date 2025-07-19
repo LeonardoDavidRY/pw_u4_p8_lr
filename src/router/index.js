@@ -34,6 +34,38 @@ const routes = [
     }
   },
   {
+    path: '/estudiante/guardar',
+    name: 'estudiante-guardar',
+    component: () => import('@/views/EstudianteGuardarView.vue'),
+    meta: {
+      requiresAuth: true, //protegida
+    }
+  },
+  {
+    path: '/estudiante/actualizar',
+    name: 'estudiante-actualizar',
+    component: () => import('@/views/EstudianteActualizarView.vue'),
+    meta: {
+      requiresAuth: true, //protegida
+    }
+  },
+  {
+    path: '/estudiante/actualizar-parcial',
+    name: 'estudiante-actualizar-parcial',
+    component: () => import('@/views/EstudianteActualizarParcialView.vue'),
+    meta: {
+      requiresAuth: true, //protegida
+    }
+  },
+  {
+    path: '/estudiante/borrar',
+    name: 'estudiante-borrar',
+    component: () => import('@/views/EstudianteBorrarView.vue'),
+    meta: {
+      requiresAuth: true, //protegida
+    }
+  },
+  {
     path: '/notas',
     name: 'notas',
     component: () => import('@/views/NotasIngresoView.vue'),
